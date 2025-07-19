@@ -7,6 +7,23 @@ class Constellations extends Phaser.Scene {
     }
 
     init() {
+
+    }
+
+    lineExistsInPairs(lines, a, b) {
+        for (let i = 0; i < lines.length; i++) {
+            const l = lines[i];
+            if ((l[0] === a && l[1] === b) || (l[0] === b && l[1] === a)) return true;
+        }
+        return false;
+    }
+
+    lineExistsInMerged(lines, a, b) {
+        for (let i = 0; i < lines.length-1; i++) {
+            const l = lines;
+            if ((l[i] === a && l[i+1] === b) || (l[i] === b && l[i+1] === a)) return true;
+        }
+        return false;
     }
 
     create() {
@@ -58,7 +75,8 @@ class Constellations extends Phaser.Scene {
         const sl = this.selectionList;
         if (sl.length !== 0) {
             if (sl[sl.length-1] === index) return;
-            // if it overlaps with another line, return
+            if (this.lineExistsInMerged(sl, sl[sl.length-1], index)) return;
+            if (!this.lineExistsInPairs(this.constellation.lines, sl[sl.length-1], index)) return;
         }
         sl.push(index);
     }
