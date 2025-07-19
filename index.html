@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kroq - An Aseprite Adventure!</title>
+    <link rel="icon" type="image/png" href="./assets/sprites/baseKroq.png">
+
+    <script src="./lib/phaser.js"></script>
+    <script src="./lib/planck.min.js"></script>
+
+    <script src="./src/prefabs/Camera.js"></script>
+    <script src="./src/prefabs/Entity.js"></script>
+    <script src="./src/prefabs/Particle.js"></script>
+    <script src="./src/prefabs/Star.js"></script>
+    <script src="./src/prefabs/Bird.js"></script>
+    <script src="./src/prefabs/Kroq.js"></script>
+    <script src="./src/prefabs/Constellation.js"></script>
+
+    <script src="./src/scenes/Load.js"></script>
+    <script src="./src/scenes/Menu.js"></script>
+    <script src="./src/scenes/UI.js"></script>
+    <script src="./src/scenes/Play.js"></script>
+    <script src="./src/scenes/Credits.js"></script>
+    <script src="./src/scenes/Constellations.js"></script>
+
+    <script src="./src/main.js"></script>
+
+    <style>
+        /* credit to u/IdealNarrow on Reddit */
+        @font-face {
+            font-family: 'pico';
+            src: url('assets/txt/pico.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        /* https://www.dafont.com/press-start-2p.font */
+        @font-face {
+            font-family: 'pressstart';
+            src: url('assets/txt/PressStart2P.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            margin: 0 !important;
+            width: 100%;
+            height: 100vh;
+            display: block;
+            /* cursor: none; */
+        }
+    </style>
+
+</head>
+<body>
+    <div style="font-family:'pico'; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <div style="font-family:'pressstart'; position:absolute; left:-1000px; visibility:hidden;">.</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+class Load extends Phaser.Scene {
+    constructor() {
+        super('loadScene')
+    }
+
+    preload() {
+        let wid = this.cameras.main.width;
+        let hei = this.cameras.main.height;
+
+        // loading bar
+        // see: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/loader/
+        let loadingBar = this.add.graphics();
+        this.load.on('progress', (value) => {
+            loadingBar.clear();
+            loadingBar.fillStyle(0xFFFFFF, 1);
+            loadingBar.fillRect(0, hei/2, wid * value, 5);
+        });
+        this.load.on('complete', () => {
+            loadingBar.destroy();
+        });
+
+        // Load assets
+        this.load.image('button-start', 'assets/sprites/startButton.png');
+        this.load.image('button-credits', 'assets/sprites/creditsButton.png');
+
+        // this.load.path = 'assets/sprites/';
+        this.load.image('kroq', 'assets/sprites/baseKroq.png');
+        this.load.image('bird', 'assets/sprites/bird.png');
+        this.load.image('star', 'assets/sprites/star.png');
+        this.load.image('heart', 'assets/sprites/heart.png');
+        this.load.image('heartBroken', 'assets/sprites/heartBroken.png');
+        this.load.image('x', 'assets/sprites/x.png');
+
+        this.load.image('title-text', 'assets/sprites/title.png');
+
+        // Load spritesheets
+        this.load.spritesheet('kroq-idle-sheet', 'assets/sprites/baseKroqIdle-Sheet.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+            startFrame: 0,
+            endFrame: 2
+        })
+        this.load.spritesheet('kroq-run-sheet', 'assets/sprites/baseKroqRunning-Sheet.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+            startFrame: 0,
+            endFrame: 2
+        })
+        this.load.spritesheet('kroq-jump-sheet', 'assets/sprites/baseKroqJumping-Sheet.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+            startFrame: 0,
+            endFrame: 2
+        })
+        this.load.spritesheet('kroq-fall-sheet', 'assets/sprites/baseKroqFalling-Sheet.png', {
+            frameWidth: 16,
+            frameHeight: 16,
+            startFrame: 0,
+            endFrame: 2
+        })
+        this.load.spritesheet('bird-flap-sheet', 'assets/sprites/bird-Sheet.png', {
+            frameWidth: 16,
+            frameHeight: 18,
+            startFrame: 0,
+            endFrame: 3
+        })
+        
+        this.load.image('p1', 'assets/sprites/smallParticle.png');
+        this.load.image('p2', 'assets/sprites/mediumParticle.png');
+        this.load.image('p3', 'assets/sprites/largeParticle.png');
+        this.load.image('p1g', 'assets/sprites/smallParticleGold.png');
+        this.load.image('p2g', 'assets/sprites/mediumParticleGold.png');
+
+        this.load.image('tilesetImage', 'assets/sprites/platform.png')
+        // this.load.path = 'assets/tilemap/';
+        this.load.tilemapTiledJSON('tilemapJSON', 'assets/tilemap/overworld.json')
+
+        this.load.audio('starPickup', 'assets/sfx/starPickup.mp3');
+        this.load.audio('kroqJump', 'assets/sfx/jump.mp3');
+        this.load.audio('birdFlap', 'assets/sfx/birdFlap.mp3');
+
+        // This loads the font because otherwise it doesn't show correctly
+        this.add.text(10000, 0, '.', {
+            fontFamily: 'pressstart',
+            fontSize: '1px',
+            color: '#000000'
+        });
+    }
+
+    // Helper function to generate frame arrays
+    genFrameArrays(sheet, twoWays) {
+        const totalFrames = this.textures.get(sheet).frameTotal - 1;
+        const frames = [];
+        for (let i = 0; i < totalFrames; i++) {
+            frames.push(i);
+        }
+        if (twoWays) {
+            for (let i = totalFrames - 2; i >= 0; i--) {
+                frames.push(i);
+            }
+        }
+        return frames;
+    }
+
+    create() {
+        // Create animations
+        this.anims.create({
+            key: 'kroq-idle-anim',
+            frames: this.anims.generateFrameNumbers('kroq-idle-sheet', { 
+                frames: this.genFrameArrays("kroq-idle-sheet", true)
+            }),
+            frameRate: 4,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'kroq-run-anim',
+            frames: this.anims.generateFrameNumbers('kroq-run-sheet', { 
+                frames: this.genFrameArrays("kroq-run-sheet", true)
+            }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.anims.create({
+            key: 'kroq-jump-anim',
+            frames: this.anims.generateFrameNumbers('kroq-jump-sheet', { 
+                frames: this.genFrameArrays("kroq-jump-sheet", false)
+            }),
+            frameRate: 4,
+            repeat: 0,
+        });
+        this.anims.create({
+            key: 'kroq-fall-anim',
+            frames: this.anims.generateFrameNumbers('kroq-fall-sheet', { 
+                frames: this.genFrameArrays("kroq-fall-sheet", false)
+            }),
+            frameRate: 4,
+            repeat: 0,
+        });
+        this.anims.create({
+            key: 'bird-flap-anim',
+            frames: this.anims.generateFrameNumbers('bird-flap-sheet', { 
+                frames: this.genFrameArrays("bird-flap-sheet", true)
+            }),
+            frameRate: 4,
+            repeat: -1,
+        });
+
+        this.scene.start('menuScene');
+    }
+}
