@@ -87,7 +87,6 @@ class Constellations extends Phaser.Scene {
             const line = l[i];
 
             this.graphics.beginPath();
-            console.log(l)
             this.graphics.moveTo(s[l[i][0]][0], s[l[i][0]][1]);
             this.graphics.lineTo(s[l[i][1]][0], s[l[i][1]][1]);
             this.graphics.strokePath();
