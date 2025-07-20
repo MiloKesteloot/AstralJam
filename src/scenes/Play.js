@@ -122,10 +122,14 @@ class Play extends Phaser.Scene {
         const map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('tilemap', 'tilesetImage');
         // this.cloudLayer = map.createLayer('Clouds', tileset); layers.push(this.cloudLayer);
-        map.createLayer('bg', tileset);
-        map.createLayer('foreground', tileset);
+        this.backgroundLayer = map.createLayer('bg', tileset);
+        this.planetsLayer = map.createLayer('planets', tileset);
+        this.cliffsLayer = map.createLayer('cliffs', tileset);
         this.groundMap = map.createLayer('ground', tileset);
+        map.createLayer('bgPlants', tileset);
         map.createLayer('plants', tileset);
+        map.createLayer('foreground', tileset);
+        // map.createLayer('mist', tileset);
 
         this.gates = [];
         const gateSpawns = map.filterObjects('spawns', (object) => object.name.startsWith("gate"));

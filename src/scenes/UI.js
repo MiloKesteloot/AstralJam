@@ -214,6 +214,10 @@ class UI extends Phaser.Scene {
         notification.setOrigin(0.5, 0);
         notification.scale = scale;
 
+        window.requestAnimationFrame(() => {
+            notification.destroy();
+        });
+
         // const star = this.add.sprite(0, 0, 'star');
         // star.scale = scale;
         // star.x = this.cameras.main.width - 93*scale;

@@ -16,6 +16,9 @@ class Gate extends Entity {
         this.special = special;
         this.timer = 1;
         this.speed = 0.01;
+
+        this.fadedToBlack = false;
+        this.turnedOffMusic = false;
     }
 
     physicsUpdate() {
@@ -29,11 +32,25 @@ class Gate extends Entity {
         }
 
         if (this.special && !UI.instance.showBook && Play.instance.currentGate > this.index-1) {
+            if (!this.turnedOffMusic) {
+                this.scene.tweens.add({
+                    targets: this.scene.game.backgroundMusic,
+                    volume: 0,
+                    duration: 200,
+                    onComplete: () => { this.scene.game.backgroundMusic.stop(); }
+                });
+                this.turnedOffMusic = true;
+            }
+
+            this.scene.game.endMusic = this.scene.sound.add('outro-song', {loop: false, volume: 0.25});
+            this.scene.game.endMusic.play();
+
             this.timer += this.speed;
             if (this.timer < 5) {
                 this.setTexture("FinalPGuy" + Math.floor(this.timer));
-            } else {
-                // cat shit here???
+            } else if (!this.fadedToBlack) {
+                UI.instance.fadeToBlack();
+                this.fadedToBlack = true;
             }
         }
     }

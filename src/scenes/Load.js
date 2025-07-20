@@ -99,6 +99,9 @@ class Load extends Phaser.Scene {
         this.load.audio('starPickup', 'assets/sfx/starPickup.mp3');
         this.load.audio('kroqJump', 'assets/sfx/jump.mp3');
         this.load.audio('birdFlap', 'assets/sfx/birdFlap.mp3');
+        this.load.audio('jazzy', 'assets/sfx/jazzy.wav');
+        this.load.audio('outro-song', 'assets/sfx/outro-song.wav');
+
 
         // This loads the font because otherwise it doesn't show correctly
         this.add.text(10000, 0, '.', {
@@ -167,5 +170,10 @@ class Load extends Phaser.Scene {
         });
 
         this.scene.start('playScene');
+
+        if (!this.game.backgroundMusic) {
+            this.game.backgroundMusic = this.sound.add('jazzy', {loop: true, volume: 0.5});
+            this.game.backgroundMusic.play();
+        }
     }
 }

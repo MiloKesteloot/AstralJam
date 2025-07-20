@@ -12,7 +12,7 @@ class Credits extends Phaser.Scene {
         this.tintGraphics = this.add.graphics();
 
         // Show credits text
-        this.add.text(0, 0, 'CREDITS\n\nMilo Kesteloot\nSofia Aminifard\nSound: Pixabay\nFonts: dafont.com\n\nESC to return', {
+        this.add.text(0, 0, 'CREDITS\n\nMilo Kesteloot\nSofia Aminifard\nBrenna Hall\nRyan Hall\nSound: Pixabay\nFonts: dafont.com\n\nESC to return', {
             fontFamily: 'pressstart',
             fontSize: '32px',
             color: '#000000'
