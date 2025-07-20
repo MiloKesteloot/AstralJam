@@ -34,7 +34,7 @@ class Kroq extends Entity {
         this.gameTimer = 0;
 
         this.checkpoint = null;
-        this.checkCheckpoints();
+        // this.checkCheckpoints();
     }
 
     // This function finds the players current checkpoint
@@ -70,21 +70,20 @@ class Kroq extends Entity {
             this.gameTimer++;
         }
         
-        if (this.ry > 420) {
-            this.health--;
-            if (this.health <= 0) {
-                this.scene.scene.stop('uiScene')
-                this.scene.scene.start('menuScene');
-                return;
-            }
-            this.setAnimation("idle");
-            this.rx = this.checkpoint.x;
-            this.ry = this.checkpoint.y;
-            this.vx = 0;
-            this.vy = 0;
-            this.setScale(1, 1);
-        }
-
+        // if (this.ry > 420) {
+        //     this.health--;
+        //     if (this.health <= 0) {
+        //         this.scene.scene.stop('uiScene')
+        //         this.scene.scene.start('menuScene');
+        //         return;
+        //     }
+        //     this.setAnimation("idle");
+        //     this.rx = this.checkpoint.x;
+        //     this.ry = this.checkpoint.y;
+        //     this.vx = 0;
+        //     this.vy = 0;
+        //     this.setScale(1, 1);
+        // }
 
         if (this.movementType === "control") {
             this.movementTypeControl();
@@ -100,6 +99,7 @@ class Kroq extends Entity {
         this.move(0, this.vy);
         this.move(this.vx, 0);
 
+
         if (this.onRoof() && this.vy < 0) {
             this.vy = 0;
             this.move(0, 1);
@@ -109,10 +109,9 @@ class Kroq extends Entity {
             this.coyoteTime = this.maxCoyoteTime;
         }
 
-        this.checkCheckpoints();
+        // this.checkCheckpoints();
 
         // this.graphics.fillPoint(this.x, this.y);
-
     }
 
     // This function is the state machine case for when he is walking on the ground

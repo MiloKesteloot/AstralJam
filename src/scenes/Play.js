@@ -4,6 +4,31 @@ class Play extends Phaser.Scene {
         super('playScene');
 
         Play.instance = this;
+
+        this.baseConstellations = {};
+
+        this.baseConstellations["house"] =
+            new Constellation(this,
+                "house",
+                1,
+                [
+                    [-40, -40], [40, -40], [40, 40], [-40, 40], [0, -80]
+                ],
+                [
+                    [0, 1], [1, 2], [2, 3], [3, 0], [0, 2], [1, 3], [0, 4], [1, 4]
+                ])
+
+
+        this.baseConstellations["pyramid"] =
+            new Constellation(this,
+                "pyramid",
+                10,
+                [
+                    [-2, -0.866], [0, -0.866], [2, -0.866], [-1, 0], [1, 0], [0, 0.866]
+                ],
+                [
+                    [0, 1], [0,3], [1, 3], [1,4], [1, 2], [2, 4], [3, 5], [3, 4], [4, 5]
+                ])
     }
 
     init() {
@@ -26,6 +51,7 @@ class Play extends Phaser.Scene {
         this.keys.ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         this.keys.R = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.keys.SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.keys.T = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
 
         // Create camera
         this.camera = new Camera(this, this.cameras.main);
@@ -34,37 +60,23 @@ class Play extends Phaser.Scene {
         this.entities = [];
 
         const map = this.add.tilemap('tilemapJSON');
-        const tileset = map.addTilesetImage('overworld', 'tilesetImage');
-        this.cloudLayer = map.createLayer('Clouds', tileset);
-        this.backgroundLayer = map.createLayer('Background', tileset);
-        map.createLayer('Decoration', tileset);
-        this.checkpoints = map.filterObjects('Objects', (object) => object.name === 'cp');
-        this.checkpoints.forEach(cp => {
-            cp.x += 8;
-            cp.y -= 8;
-        });
-        const kroqSpawn = map.findObject('Objects', (object) => object.name === 'kroq-spawn');
+        const tileset = map.addTilesetImage('tilemap', 'tilesetImage');
+        // this.cloudLayer = map.createLayer('Clouds', tileset); layers.push(this.cloudLayer);
+        map.createLayer('bg', tileset);
+        map.createLayer('foreground', tileset);
+        this.groundMap = map.createLayer('ground', tileset);
+        map.createLayer('plants', tileset);
+
+        const kroqSpawn = map.findObject('spawns', (object) => object.name === 'spawn');
         this.kroq = new Kroq(this, kroqSpawn.x, kroqSpawn.y);
         this.entities.push(this.kroq);
-        const birdSpawns = map.filterObjects('Objects', (object) => object.name === 'bird-spawn');
-        // Get the leftmost bird to find the "finish" bird
-        let leftMostBird = null;
-        for (let birdSpawn of birdSpawns) {
-            const bird = new Bird(this, birdSpawn.x, birdSpawn.y-10);
-            this.entities.push(bird);
-            if (leftMostBird === null || bird.rx > leftMostBird.rx) {
-                leftMostBird = bird;
-            }
-        }
-        leftMostBird.endBird = true;
-        const starSpawns = map.filterObjects('Objects', (object) => object.name === 'star');
-        for (let starSpawn of starSpawns) {
-            this.entities.push(new Star(this, starSpawn.x, starSpawn.y));
-        }
-        this.groundMap = map.createLayer('Ground', tileset);
-        map.createLayer('DecoGround', tileset);
-        this.waterLayer = map.createLayer('Water', tileset);
-        this.waterLayer.setDepth(20);
+
+        // const starSpawns = map.filterObjects('Objects', (object) => object.name === 'star');
+        // for (let starSpawn of starSpawns) {
+        //     this.entities.push(new Star(this, starSpawn.x, starSpawn.y));
+        // }
+
+        // this.waterLayer.setDepth(20);
 
         this.tilemap = map;
 
@@ -73,7 +85,7 @@ class Play extends Phaser.Scene {
         this.scene.launch('uiScene');
         this.scene.bringToTop('uiScene');
 
-        this.kroq.move(0, 10);
+        // this.kroq.move(0, 10);
     }
 
     physicsUpdate() {
@@ -104,6 +116,12 @@ class Play extends Phaser.Scene {
                 this.scene.start('menuScene');
                 return;
             }
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.keys.T)) {
+            this.scene.stop('uiScene')
+            this.scene.start('constellationsScene');
+            return;
         }
 
         // Set up timing for consistent time

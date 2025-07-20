@@ -26,6 +26,16 @@ class Constellations extends Phaser.Scene {
         return false;
     }
 
+    getConnectingInPairs(lines, a) {
+        let pairs = [];
+        for (let i = 0; i < lines.length; i++) {
+            const l = lines[i];
+            if (l[0] === a) pairs.push([a, l[1]]);
+            if (l[1] === a) pairs.push([l[0], a]);
+        }
+        return pairs;
+    }
+
     create() {
 
         this.graphics = this.add.graphics();
@@ -52,33 +62,61 @@ class Constellations extends Phaser.Scene {
         // this.scene.bringToTop('uiScene');
 
         this.selectionList = [];
+        this.selectedConstellation = null;
 
-        this.constellation = new Constellation(this, [
-                [-40, -40], [40, -40], [40, 40], [-40, 40], [0, -80]
-            ],
-            [
-                [0, 1], [1, 2], [2, 3], [3, 0], [0, 2], [1, 3], [0, 4], [1, 4]
-            ])
+        this.constellations = [];
+
+        this.constellations.push(
+            Play.instance.baseConstellations["house"].clone().modify(-50, -50, 2,).showStars(this)
+        )
+
+        this.constellations.push(
+            Play.instance.baseConstellations["pyramid"].clone().modify(50, 50, 2,).showStars(this)
+        )
 
         const constellations = this;
 
-        for (let i = 0; i < this.constellation.stars.length; i++) {
-            const star = this.constellation.stars[i];
-            star.setInteractive();
-            star.on('pointerdown', function(pointer) {
-                constellations.starClicked(i);
-            })
+        for (let c = 0; c < this.constellations.length; c++) {
+            const constellation = this.constellations[c];
+            for (let i = 0; i < constellation.stars.length; i++) {
+                const star = constellation.stars[i];
+                star.setInteractive();
+                star.on('pointerdown', function(pointer) {
+                    constellations.starClicked(c, i);
+                })
+            }
         }
     }
 
-    starClicked(index) {
+    starClicked(constellation, index) {
+        if (this.selectedConstellation !== null && this.selectedConstellation !== constellation) return;
+        this.selectedConstellation = constellation;
+
         const sl = this.selectionList;
         if (sl.length !== 0) {
             if (sl[sl.length-1] === index) return;
             if (this.lineExistsInMerged(sl, sl[sl.length-1], index)) return;
-            if (!this.lineExistsInPairs(this.constellation.lines, sl[sl.length-1], index)) return;
+            if (!this.lineExistsInPairs(this.constellations[constellation].lines, sl[sl.length - 1], index)) {
+                return
+            }
         }
         sl.push(index);
+        const connecting = this.getConnectingInPairs(this.constellations[constellation].lines, index);
+        for (let i = 0; i < connecting.length; i++) {
+            const pair = connecting[i];
+            if (!this.lineExistsInMerged(sl, pair[0], pair[1])) return;
+        }
+        for (let i = 0; i < this.constellations[constellation].lines.length; i++) {
+            const pair = this.constellations[constellation].lines[i];
+            if (!this.lineExistsInMerged(this.selectionList, pair[0], pair[1])) {
+                this.selectionList = [];
+                this.selectedConstellation = null;
+                return;
+            }
+        }
+        this.constellations[this.selectedConstellation].finished = true;
+        this.selectionList = [];
+        this.selectedConstellation = null;
     }
 
     physicsUpdate() {
@@ -87,56 +125,52 @@ class Constellations extends Phaser.Scene {
 
         // UI.instance.physicsUpdate();
 
-        this.constellation.physicsUpdate();
+        this.constellations.forEach(constellation => {
+            constellation.physicsUpdate();
+        });
     }
 
     visualUpdate() {
         // Put all entities where they should be on screen
         // this.entities.forEach(entity => entity.visualUpdate());
-        this.constellation.visualUpdate();
+        this.constellations.forEach(constellation => {
+            constellation.visualUpdate();
+        });
         this.camera.update();
         this.graphics.clear();
 
-        const s = this.constellation.starPositions;
-
-        this.graphics.lineStyle(1, 0x666666, 1);
-        const l = this.constellation.lines;
-        for (let i = 0; i < l.length; i++) {
-            const line = l[i];
-
-            this.graphics.beginPath();
-            this.graphics.moveTo(s[l[i][0]][0], s[l[i][0]][1]);
-            this.graphics.lineTo(s[l[i][1]][0], s[l[i][1]][1]);
-            this.graphics.strokePath();
+        for (let i = 0; i < this.constellations.length; i++) {
+            this.constellations[i].draw(this.graphics);
         }
 
-        const sl = this.selectionList;
-        if (sl.length > 0) {
-            this.graphics.lineStyle(3, 0xffffff, 1);
-            this.graphics.beginPath();
-            this.graphics.moveTo(s[sl[0]][0], s[sl[0]][1]);
-            for (let i = 1; i < sl.length; i++) {
-                this.graphics.lineTo(s[sl[i]][0], s[sl[i]][1]);
+
+        if (this.selectedConstellation !== null) {
+            const s = this.constellations[this.selectedConstellation].starPositions;
+            const sl = this.selectionList;
+            if (sl.length > 0) {
+                this.graphics.lineStyle(3, 0xffffff, 1);
+                this.graphics.beginPath();
+                this.graphics.moveTo(s[sl[0]][0], s[sl[0]][1]);
+                for (let i = 1; i < sl.length; i++) {
+                    this.graphics.lineTo(s[sl[i]][0], s[sl[i]][1]);
+                }
+                let worldPoint = this.cameras.main.getWorldPoint(this.pointer.x, this.pointer.y);
+                this.graphics.lineTo(worldPoint.x, worldPoint.y);
+                this.graphics.strokePath();
             }
-            let worldPoint = this.cameras.main.getWorldPoint(this.pointer.x, this.pointer.y);
-            this.graphics.lineTo(worldPoint.x, worldPoint.y);
-            this.graphics.strokePath();
         }
     }
 
     update(_, dt) {
 
         // Handle scene key inputs
-        if (Phaser.Input.Keyboard.JustDown(this.keys.R)) {
-            this.scene.stop('uiScene')
-            this.scene.start('constellationsScene');
-            return;
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this.keys.ESC)) {
-            if (UI.instance.blackStage === 0 || UI.instance.skipOutro()) {
+        if (Phaser.Input.Keyboard.JustDown(this.keys.ESC) || Phaser.Input.Keyboard.JustDown(this.keys.R)) {
+            if (this.selectedConstellation !== null) {
+                this.selectedConstellation = null;
+                this.selectionList = [];
+            } else {
                 this.scene.stop('uiScene')
-                this.scene.start('menuScene');
+                this.scene.start('playScene');
                 return;
             }
         }

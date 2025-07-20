@@ -5,7 +5,7 @@ class Camera {
         this.xOffset = xOffset;
         this.camera.setBackgroundColor("#51A9B5");
         this.follow = null;
-        this.scale = 4;
+        this.scale = undefined;
 
         // This is for the scrolling water
         this.waterX = 0;
@@ -17,13 +17,13 @@ class Camera {
         
         // This code callibrates the proper scale for the screen size
         let desiredHeight = 983.2000122070312; // My monitor height
-        let desiredScale = 4; // My monitor scale
+        let desiredScale = 3.1; // My monitor scale
         let theirHeight = this.camera.height; // User monitor height
         let theirScale = (desiredScale / desiredHeight) * theirHeight; // Solve for user scale
 
         this.scale = theirScale;
 
-        // This code centeres the center of the screen on 0, 0 and follows whatever the variable this.follow is set to
+        // This code centers the center of the screen on 0, 0 and follows whatever the variable this.follow is set to
         this.camera.scrollX = -this.camera.width / 2;
         this.camera.scrollY = -this.camera.height / 2;
         if (this.follow != null) {
@@ -31,7 +31,7 @@ class Camera {
             if (this.camera.scrollX < this.camera.width / 2 / this.scale - this.camera.width/2 + this.scale) {
                 this.camera.scrollX = this.camera.width / 2 / this.scale - this.camera.width/2 + this.scale;
             }
-            this.camera.scrollY += 346 - 40; // this.follow.y;
+            this.camera.scrollY += 20*16/2; // this.follow.y;
         }
         this.camera.setZoom(this.scale);
 

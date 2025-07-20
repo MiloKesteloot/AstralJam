@@ -72,8 +72,6 @@ class Entity extends Phaser.GameObjects.Sprite {
         }
 
         this.pushOut(vx, vy);
-
-        return;
     }
 
     // This function checks if the entity is in a wall, and if it is, it pushes it fully out

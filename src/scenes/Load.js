@@ -71,9 +71,9 @@ class Load extends Phaser.Scene {
         this.load.image('p1g', 'assets/sprites/smallParticleGold.png');
         this.load.image('p2g', 'assets/sprites/mediumParticleGold.png');
 
-        this.load.image('tilesetImage', 'assets/sprites/platform.png')
+        this.load.image('tilesetImage', 'assets/sprites/tilemap.png')
         // this.load.path = 'assets/tilemap/';
-        this.load.tilemapTiledJSON('tilemapJSON', 'assets/tilemap/overworld.json')
+        this.load.tilemapTiledJSON('tilemapJSON', 'assets/tilemap/astralGardens.tmj');
 
         this.load.audio('starPickup', 'assets/sfx/starPickup.mp3');
         this.load.audio('kroqJump', 'assets/sfx/jump.mp3');

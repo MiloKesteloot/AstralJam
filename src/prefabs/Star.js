@@ -4,6 +4,10 @@ class Star extends Entity {
         // Settings for star
         this.t = 0;
         this.bobSpeed = 0.025;
+
+        this.preFX.addBloom(0xffffff);
+
+        this.postFX.addBloom(0xffffff);
     }
 
     physicsUpdate() {

@@ -13,13 +13,13 @@ class Menu extends Phaser.Scene {
         // Load background map
         const layers = [];
         const map = this.add.tilemap('tilemapJSON');
-        const tileset = map.addTilesetImage('overworld', 'tilesetImage');
-        this.cloudLayer = map.createLayer('Clouds', tileset); layers.push(this.cloudLayer);
-        this.backgroundLayer = map.createLayer('Background', tileset); layers.push(this.backgroundLayer);
-        this.groundMap = map.createLayer('DemoGround', tileset); layers.push(this.groundMap);
-        layers.push(map.createLayer('DecoGround', tileset));
-        this.waterLayer = map.createLayer('Water', tileset); layers.push(this.waterLayer);
-        this.waterLayer.setDepth(20);
+        const tileset = map.addTilesetImage('tilemap', 'tilesetImage');
+        // this.cloudLayer = map.createLayer('Clouds', tileset); layers.push(this.cloudLayer);
+        this.backgroundLayer = map.createLayer('bg', tileset); layers.push(this.backgroundLayer);
+        // this.groundMap = map.createLayer('DemoGround', tileset); layers.push(this.groundMap);
+        // layers.push(map.createLayer('DecoGround', tileset));
+        // this.waterLayer = map.createLayer('Water', tileset); layers.push(this.waterLayer);
+        // this.waterLayer.setDepth(20);
 
         this.layers = layers;
         this.map = map;
@@ -47,7 +47,7 @@ class Menu extends Phaser.Scene {
         const scene = this;
 
         startButton.on('pointerdown', function(pointer) {
-            scene.scene.start('constellationsScene'); //playScene
+            scene.scene.start('playScene'); //playScene constellationsScene
         });
 
         creditsButton.on('pointerdown', function(pointer) {
