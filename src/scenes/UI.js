@@ -31,6 +31,32 @@ class UI extends Phaser.Scene {
 
         this.kroq = Play.instance.kroq;
         this.healthUpdate = this.kroq.health;
+
+        // let heart = this.add.sprite(0, 0, 'heart');
+        // heart.scale = scale;
+        // heart.x = this.cameras.main.width - heart.width*scale - (heart.width+1)*scale*i;
+        // heart.y = heart.height*scale;
+
+        if (this.showBook !== true) {
+            this.showBook = false;
+        }
+        if (this.book === undefined) {
+            this.bookPage = 1;
+        }
+
+        const t = this;
+
+        this.book = this.add.sprite(0, 0, 'Journal' + this.bookPage);
+        this.leftArrow = this.add.sprite(0, 0, 'Arrow');
+        this.leftArrow.on('pointerdown', function(pointer) {
+            t.bookPage--;
+            t.book.setTexture('Journal' + (t.bookPage));
+        })
+        this.rightArrow = this.add.sprite(0, 0, 'Arrow');
+        this.rightArrow.on('pointerdown', function(pointer) {
+            t.bookPage++;
+            t.book.setTexture('Journal' + (t.bookPage));
+        })
     }
 
     skipOutro() {
@@ -92,6 +118,55 @@ class UI extends Phaser.Scene {
                 this.centerText.y = this.sys.game.canvas.height/2;
             }
         }
+
+        const scale = Play.instance.camera.scale;
+
+        if (!this.showBook) {
+            this.book.setVisible(false);
+            this.book.disableInteractive();
+        } else {
+            this.book.setVisible(true);
+            this.book.setInteractive();
+        }
+
+        this.book.scale = scale;
+        this.book.x = this.cameras.main.width/2;
+        this.book.y = this.cameras.main.height/2;
+
+        if (!this.showBook || this.bookPage === 1) {
+            this.leftArrow.setVisible(false);
+            this.leftArrow.disableInteractive();
+        } else {
+            this.leftArrow.setVisible(true);
+            this.leftArrow.setInteractive();
+        }
+        this.leftArrow.scale = scale;
+        this.leftArrow.x = this.cameras.main.width/2 - 205*scale;
+        this.leftArrow.y = this.cameras.main.height/2 + 98*scale;
+
+        if (!this.showBook || this.bookPage === 5 || this.bookPage > Play.instance.currentGate - 1) { // ||
+            this.rightArrow.setVisible(false);
+            this.rightArrow.disableInteractive();
+        } else {
+            this.rightArrow.setVisible(true);
+            this.rightArrow.setInteractive();
+        }
+
+        this.rightArrow.scale = -scale;
+        this.rightArrow.x = this.cameras.main.width/2 + 205*scale;
+        this.rightArrow.y = this.cameras.main.height/2 + 98*scale;
+    }
+
+    showBookF(page) {
+        if (page === undefined) {
+            page = this.bookPage;
+        }
+        this.bookPage = page;
+        this.showBook = true;
+    }
+
+    hideBookF() {
+        this.showBook = false;
     }
 
     fadeToBlack() {

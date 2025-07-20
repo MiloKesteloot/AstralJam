@@ -68,13 +68,22 @@ class Constellations extends Phaser.Scene {
 
         this.constellations = [];
 
-        this.constellations.push(
-            Play.instance.baseConstellations["house"].clone().modify(-40, -40, 2,).showStars(this)
-        )
 
-        this.constellations.push(
-            Play.instance.baseConstellations["pyramid"].clone().modify(30, 30, 2,).showStars(this)
-        )
+        let spawnPoints = [
+            [[0, 0]],
+            [[-50, 50], [50, -50]],
+            [[0, -60], [-60, 40], [60, 40]]
+        ]
+
+        const constellationsToShow = Play.instance.constellationGroups[Play.instance.currentGate];
+        const spawns = spawnPoints[constellationsToShow.length - 1];
+
+        for (let i = 0; i < constellationsToShow.length; i++) {
+            const constToShow = constellationsToShow[i];
+            this.constellations.push(
+                Play.instance.baseConstellations[constToShow].clone().modify(...(spawns[i]), 2).showStars(this)
+            )
+        }
 
         const constellations = this;
 
@@ -118,9 +127,29 @@ class Constellations extends Phaser.Scene {
                 return;
             }
         }
-        this.constellations[this.selectedConstellation].finished = true;
+        this.constellations[this.selectedConstellation].setFinished();
         this.selectionList = [];
         this.selectedConstellation = null;
+
+        const showingGateGroup = Play.instance.currentGate;
+
+        const constellationsToShow = Play.instance.constellationGroups[showingGateGroup];
+
+        for (let i = 0; i < constellationsToShow.length; i++) {
+            const constToShow = Play.instance.baseConstellations[constellationsToShow[i]];
+            if (!constToShow.getFinished()) return;
+        }
+
+        let newLevel = false;
+        if (Play.instance.currentGate === showingGateGroup) {
+            Play.instance.currentGate++;
+            newLevel = true;
+        }
+        this.scene.stop('uiScene')
+        this.scene.start('playScene');
+        if (newLevel) {
+            UI.instance.showBookF(Play.instance.currentGate);
+        }
     }
 
     physicsUpdate() {
@@ -152,7 +181,7 @@ class Constellations extends Phaser.Scene {
             const s = this.constellations[this.selectedConstellation].starPositions;
             const sl = this.selectionList;
             if (sl.length > 0) {
-                this.graphics.lineStyle(3, 0xffffff, 1);
+                this.graphics.lineStyle(3, 0xf5e79b, 1);
                 this.graphics.beginPath();
                 this.graphics.moveTo(s[sl[0]][0], s[sl[0]][1]);
                 for (let i = 1; i < sl.length; i++) {

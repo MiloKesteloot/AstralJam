@@ -29,7 +29,13 @@ class Load extends Phaser.Scene {
         this.load.image('star', 'assets/sprites/star.png');
         this.load.image('starHover', 'assets/sprites/starHover.png');
         this.load.image('starBright', 'assets/sprites/starBright.png');
+        this.load.image('starFinish', 'assets/sprites/starFinish.png');
         this.load.image('spaceBG', 'assets/sprites/spaceBG.png');
+        this.load.image('Arrow', 'assets/sprites/Arrow.png');
+
+        for (let i = 1; i < 6; i++) {
+            this.load.image('Journal' + i, 'assets/sprites/Journal' + i + '.png');;
+        }
 
         for (let i = 1; i < 5; i++) {
             this.load.image('Gate' + i + "Closed", 'assets/sprites/gate/Gate' + i + 'Closed.png');
@@ -157,6 +163,6 @@ class Load extends Phaser.Scene {
             repeat: -1,
         });
 
-        this.scene.start('menuScene');
+        this.scene.start('playScene');
     }
 }

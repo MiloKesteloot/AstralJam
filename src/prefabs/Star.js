@@ -1,7 +1,13 @@
 class Star extends Entity {
-    constructor(scene, x, y) {
-        super(scene, x, y, "star", 10, 10);
+    constructor(scene, x, y, finished) {
+        let sprite = "star";
+        if (finished) {
+            sprite = "starFinish";
+        }
+        super(scene, x, y, sprite, 10, 10);
         // Settings for star
+        this.finished = finished;
+
         this.t = Math.floor(Math.random()*1000);
         this.bobSpeed = 0.025;
 
@@ -17,10 +23,20 @@ class Star extends Entity {
         });
 
         this.on('pointerout', function () {
-            this.setTexture('star');
+            let sprite = "star";
+            if (this.finished) {
+                sprite = "starFinish";
+            }
+            this.setTexture(sprite);
         });
 
         this.setDepth(3);
+    }
+
+    setFinished() {
+        this.finished = true;
+
+        this.setTexture('starFinish');
     }
 
     physicsUpdate() {

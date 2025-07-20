@@ -63,7 +63,6 @@ class Kroq extends Entity {
         // if (this.keyUpClick()) {
         //     this.move(0, -0.3333);
         // }
-        // console.log(this.inGround(), this.ry);
         // return;
 
         if (this.gameTimer > 0) {

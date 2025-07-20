@@ -6,10 +6,21 @@ class Constellation {
         this.lines = lines;
         this.stars = []
         for (let star of starPositions) {
-            star[0] *= scale;
+            star[0] *= Math.abs(scale);
             star[1] *= scale;
         }
         this.finished = false;
+    }
+
+    setFinished() {
+        Play.instance.baseConstellations[this.name].finished = true;
+        for (let star of this.stars) {
+            star.setFinished();
+        }
+    }
+
+    getFinished() {
+        return Play.instance.baseConstellations[this.name].finished;
     }
 
     clone() {
@@ -34,7 +45,7 @@ class Constellation {
 
     showStars(scene) {
         for (let star of this.starPositions) {
-            this.stars.push(new Star(scene, star[0], star[1]));
+            this.stars.push(new Star(scene, star[0], star[1], this.getFinished()));
         }
         return this;
     }
@@ -51,8 +62,8 @@ class Constellation {
         const s = this.starPositions;
 
         let color = 0x666666;
-        if (this.finished) {
-            color = 0x00ff00;
+        if (this.getFinished()) {
+            color = 0xf5e79b;
         }
         graphics.lineStyle(1, color, 1);
         const l = this.lines;

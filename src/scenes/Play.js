@@ -9,6 +9,30 @@ class Play extends Phaser.Scene {
 
         this.baseConstellations = {};
 
+        this.constellationGroups = [
+            ["test"],
+            ["test"],
+            ["test"],
+            ["test"],
+            ["test"],
+            ["littleD"],
+            ["orion"],
+            ["pyramid"],
+            ["house"],
+            ["telescope"]
+        ]
+
+        this.baseConstellations["test"] =
+            new Constellation(this,
+                "test",
+                1,
+                [
+                    [10, 10], [-10, -10]
+                ],
+                [
+                    [0, 1]
+                ])
+
         this.baseConstellations["house"] =
             new Constellation(this,
                 "house",
@@ -30,6 +54,43 @@ class Play extends Phaser.Scene {
                 [
                     [0, 1], [0,3], [1, 3], [1,4], [1, 2], [2, 4], [3, 5], [3, 4], [4, 5]
                 ])
+
+        this.baseConstellations["littleD"] =
+            new Constellation(this,
+                "littleD",
+                70,
+                [
+                    [-2.5, -1.7], [-1.8, -0.8], [-0.7, -0.2], [0.6, 0.1], [2.3, 0], [2, 1.2], [0.6, 1]
+                ],
+                [
+                    [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]
+                ])
+
+        this.baseConstellations["telescope"] =
+            new Constellation(this,
+                "telescope",
+                70,
+                [
+                    [-2.2, 0.5], [-1.8, 0], [-1.3, -0.1], [-0.4, -0.3], [0.5, -0.8], [1.5, -1.2], [2.1, -0.8], [2.2, -0.1], [1.6, -0.5], [1.6, 0.3], [0, 0.4], [-0.8, 0.5], [-1.6, 0.7]
+                ],
+                [
+                    [0, 1], [0, 12], [1, 2], [1, 11], [1, 12], [2, 3], [2, 11], [2, 12], [3, 4], [3, 10], [3, 11], [4, 5], [4, 9], [4, 10], [5, 6], [5, 8], [6, 7], [7, 8], [9, 10], [10, 11], [11, 12]
+                ])
+
+        this.baseConstellations["orion"] =
+            new Constellation(this,
+                "orion",
+                70,
+                [
+                    [1, 1.7], [-0.8, 1.7], [-0.3, 0.1], [-0.8, -1.9], [0.5, -2.4], [0.9, -1.5], [0.5, -0.1], [0.1, 0]
+                ],
+                [
+                    [0, 1], [0, 6], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 2]
+                ])
+
+        // Save player position for when scene is loaded
+        this.px = -1;
+        this.py = -1;
     }
 
     init() {
@@ -52,7 +113,8 @@ class Play extends Phaser.Scene {
         this.keys.ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         this.keys.R = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.keys.SPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.keys.T = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
+        this.keys.E = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+        this.keys.B = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
 
         // Create camera
         this.camera = new Camera(this, this.cameras.main);
@@ -78,9 +140,14 @@ class Play extends Phaser.Scene {
             this.gates.push(g);
         }
 
-        const kroqSpawn = map.findObject('spawns', (object) => object.name === 'spawn');
-        this.kroq = new Kroq(this, kroqSpawn.x, kroqSpawn.y);
-        this.entities.push(this.kroq);
+        if (this.px === -1 && this.py === -1) {
+            const kroqSpawn = map.findObject('spawns', (object) => object.name === 'spawn');
+            this.kroq = new Kroq(this, kroqSpawn.x, kroqSpawn.y);
+            this.entities.push(this.kroq);
+        } else {
+            this.kroq = new Kroq(this, this.px, this.py);
+            this.entities.push(this.kroq);
+        }
 
         // this.waterLayer.setDepth(20);
 
@@ -88,7 +155,7 @@ class Play extends Phaser.Scene {
 
         this.camera.setFollow(this.kroq);
 
-        this.scene.launch('uiScene');
+        this.UI = this.scene.launch('uiScene');
         this.scene.bringToTop('uiScene');
 
         // this.kroq.move(0, 10);
@@ -109,22 +176,25 @@ class Play extends Phaser.Scene {
 
     update(_, dt) {
 
-        // Handle scene key inputs
-        if (Phaser.Input.Keyboard.JustDown(this.keys.R)) {
-            this.scene.stop('uiScene')
-            this.scene.start('playScene');
-            return;
-        }
+        // if (Phaser.Input.Keyboard.JustDown(this.keys.ESC)) {
+        //     if (UI.instance.blackStage === 0 || UI.instance.skipOutro()) {
+        //         this.scene.stop('uiScene')
+        //         this.scene.start('menuScene');
+        //         return;
+        //     }
+        // }
 
         if (Phaser.Input.Keyboard.JustDown(this.keys.ESC)) {
-            if (UI.instance.blackStage === 0 || UI.instance.skipOutro()) {
-                this.scene.stop('uiScene')
-                this.scene.start('menuScene');
-                return;
-            }
+            UI.instance.hideBookF();
         }
 
-        if (Phaser.Input.Keyboard.JustDown(this.keys.T)) {
+        if (Phaser.Input.Keyboard.JustDown(this.keys.B) && this.currentGate > 0) {
+            UI.instance.showBookF();
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(this.keys.E)) {
+            this.px = this.kroq.x;
+            this.py = this.kroq.y;
             this.scene.stop('uiScene')
             this.scene.start('constellationsScene');
             return;
