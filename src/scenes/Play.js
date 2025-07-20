@@ -10,11 +10,6 @@ class Play extends Phaser.Scene {
         this.baseConstellations = {};
 
         this.constellationGroups = [
-            ["test"],
-            ["test"],
-            ["test"],
-            ["test"],
-            ["test"],
             ["littleD"],
             ["orion"],
             ["pyramid"],
