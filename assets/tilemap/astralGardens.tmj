@@ -264,8 +264,8 @@
                  "type":"gate",
                  "visible":true,
                  "width":0,
-                 "x":411.818181818182,
-                 "y":202.909090909091
+                 "x":415,
+                 "y":195
                 }, 
                 {
                  "height":0,
@@ -277,7 +277,7 @@
                  "visible":true,
                  "width":0,
                  "x":889,
-                 "y":202.333333333333
+                 "y":177
                 }, 
                 {
                  "height":0,
@@ -288,8 +288,8 @@
                  "type":"gate",
                  "visible":true,
                  "width":0,
-                 "x":1095,
-                 "y":192.666666666667
+                 "x":1096,
+                 "y":168
                 }, 
                 {
                  "height":0,
@@ -324,8 +324,8 @@
                  "type":"gate",
                  "visible":true,
                  "width":0,
-                 "x":1540.66666666667,
-                 "y":181.333333333333
+                 "x":1542,
+                 "y":160
                 }, 
                 {
                  "height":0,
@@ -475,9 +475,80 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":21,
+         "name":"puzzle",
+         "objects":[
+                {
+                 "height":0,
+                 "id":42,
+                 "name":"puzzle1",
+                 "point":true,
+                 "rotation":0,
+                 "type":"puzzle",
+                 "visible":true,
+                 "width":0,
+                 "x":393.5,
+                 "y":201.5
+                }, 
+                {
+                 "height":0,
+                 "id":44,
+                 "name":"puzzle2",
+                 "point":true,
+                 "rotation":0,
+                 "type":"puzzle",
+                 "visible":true,
+                 "width":0,
+                 "x":867,
+                 "y":199
+                }, 
+                {
+                 "height":0,
+                 "id":45,
+                 "name":"puzzle3",
+                 "point":true,
+                 "rotation":0,
+                 "type":"puzzle",
+                 "visible":true,
+                 "width":0,
+                 "x":1047.5,
+                 "y":197
+                }, 
+                {
+                 "height":0,
+                 "id":46,
+                 "name":"puzzle4",
+                 "point":true,
+                 "rotation":0,
+                 "type":"puzzle",
+                 "visible":true,
+                 "width":0,
+                 "x":1495.5,
+                 "y":183
+                }, 
+                {
+                 "height":0,
+                 "id":47,
+                 "name":"puzzle5",
+                 "point":true,
+                 "rotation":0,
+                 "type":"puzzle",
+                 "visible":true,
+                 "width":0,
+                 "x":1706,
+                 "y":181
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextlayerid":21,
- "nextobjectid":42,
+ "nextlayerid":22,
+ "nextobjectid":48,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

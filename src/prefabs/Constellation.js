@@ -2,7 +2,6 @@ class Constellation {
     constructor(scene, name, scale, starPositions, lines) {
         this.scene = scene;
         this.name = name;
-        this.scale = scale;
         this.starPositions = starPositions;
         this.lines = lines;
         this.stars = []
@@ -10,12 +9,11 @@ class Constellation {
             star[0] *= scale;
             star[1] *= scale;
         }
-
         this.finished = false;
     }
 
     clone() {
-            return new Constellation(this.scene, this.name, this.scale,
+            return new Constellation(this.scene, this.name, 1,
             this.starPositions.map(pos => [...pos]),
             this.lines.map(line => [...line]));
     }

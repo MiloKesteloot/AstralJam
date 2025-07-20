@@ -111,7 +111,9 @@ class Entity extends Phaser.GameObjects.Sprite {
             y = ay + this.ry;
         }
 
-    
+        if (this.scene.currentGate !== -1 && x > this.scene.gates[this.scene.currentGate].x) {
+            return true;
+        }
         
         const cx1 = Math.floor(Math.floor(x)/16);
         const cy1 = Math.floor(Math.floor(y)/16);
@@ -122,6 +124,7 @@ class Entity extends Phaser.GameObjects.Sprite {
         let tile21 = this.scene.tilemap.getTileAt(cx2, cy1, true, this.scene.groundMap);
         let tile12 = this.scene.tilemap.getTileAt(cx1, cy2, true, this.scene.groundMap);
         let tile22 = this.scene.tilemap.getTileAt(cx2, cy2, true, this.scene.groundMap);
+
         return tile11 === null || tile11.index !== -1 ||
                tile21 === null || tile21.index !== -1 ||
                tile12 === null || tile12.index !== -1 ||

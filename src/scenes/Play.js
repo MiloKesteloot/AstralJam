@@ -5,6 +5,8 @@ class Play extends Phaser.Scene {
 
         Play.instance = this;
 
+        this.currentGate = 0;
+
         this.baseConstellations = {};
 
         this.baseConstellations["house"] =
@@ -18,13 +20,12 @@ class Play extends Phaser.Scene {
                     [0, 1], [1, 2], [2, 3], [3, 0], [0, 2], [1, 3], [0, 4], [1, 4]
                 ])
 
-
         this.baseConstellations["pyramid"] =
             new Constellation(this,
                 "pyramid",
-                10,
+                -70,
                 [
-                    [-2, -0.866], [0, -0.866], [2, -0.866], [-1, 0], [1, 0], [0, 0.866]
+                    [-1, -0.866], [0, -0.866], [1, -0.866], [-0.5, 0], [0.5, 0], [0, 0.866]
                 ],
                 [
                     [0, 1], [0,3], [1, 3], [1,4], [1, 2], [2, 4], [3, 5], [3, 4], [4, 5]
@@ -67,14 +68,19 @@ class Play extends Phaser.Scene {
         this.groundMap = map.createLayer('ground', tileset);
         map.createLayer('plants', tileset);
 
+        this.gates = [];
+        const gateSpawns = map.filterObjects('spawns', (object) => object.name.startsWith("gate"));
+        for (let gate of gateSpawns) {
+            const num = gate.name.match(/\d+/)[0];   // Returns "4" as a string
+            const result = Number(num);
+            const g = new Gate(this, gate.x, gate.y, result);
+            this.entities.push(g);
+            this.gates.push(g);
+        }
+
         const kroqSpawn = map.findObject('spawns', (object) => object.name === 'spawn');
         this.kroq = new Kroq(this, kroqSpawn.x, kroqSpawn.y);
         this.entities.push(this.kroq);
-
-        // const starSpawns = map.filterObjects('Objects', (object) => object.name === 'star');
-        // for (let starSpawn of starSpawns) {
-        //     this.entities.push(new Star(this, starSpawn.x, starSpawn.y));
-        // }
 
         // this.waterLayer.setDepth(20);
 

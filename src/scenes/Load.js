@@ -27,6 +27,18 @@ class Load extends Phaser.Scene {
         this.load.image('kroq', 'assets/sprites/baseKroq.png');
         this.load.image('bird', 'assets/sprites/bird.png');
         this.load.image('star', 'assets/sprites/star.png');
+        this.load.image('starHover', 'assets/sprites/starHover.png');
+        this.load.image('starBright', 'assets/sprites/starBright.png');
+        this.load.image('spaceBG', 'assets/sprites/spaceBG.png');
+
+        for (let i = 1; i < 5; i++) {
+            this.load.image('Gate' + i + "Closed", 'assets/sprites/gate/Gate' + i + 'Closed.png');
+            this.load.image('Gate' + i + "Open", 'assets/sprites/gate/Gate' + i + 'Open.png');
+            this.load.image('FinalPGuy' + i, 'assets/sprites/gate/FinalPGuy' + i + '.png');
+        }
+
+
+        this.load.image('viewport', 'assets/sprites/viewport.png');
         this.load.image('heart', 'assets/sprites/heart.png');
         this.load.image('heartBroken', 'assets/sprites/heartBroken.png');
         this.load.image('x', 'assets/sprites/x.png');
@@ -35,26 +47,26 @@ class Load extends Phaser.Scene {
 
         // Load spritesheets
         this.load.spritesheet('kroq-idle-sheet', 'assets/sprites/baseKroqIdle-Sheet.png', {
-            frameWidth: 16,
-            frameHeight: 16,
+            frameWidth: 13,
+            frameHeight: 15,
             startFrame: 0,
             endFrame: 2
         })
         this.load.spritesheet('kroq-run-sheet', 'assets/sprites/baseKroqRunning-Sheet.png', {
-            frameWidth: 16,
-            frameHeight: 16,
+            frameWidth: 13,
+            frameHeight: 15,
             startFrame: 0,
             endFrame: 2
         })
         this.load.spritesheet('kroq-jump-sheet', 'assets/sprites/baseKroqJumping-Sheet.png', {
-            frameWidth: 16,
-            frameHeight: 16,
+            frameWidth: 13,
+            frameHeight: 15,
             startFrame: 0,
-            endFrame: 2
+            endFrame: 3
         })
         this.load.spritesheet('kroq-fall-sheet', 'assets/sprites/baseKroqFalling-Sheet.png', {
-            frameWidth: 16,
-            frameHeight: 16,
+            frameWidth: 13,
+            frameHeight: 15,
             startFrame: 0,
             endFrame: 2
         })

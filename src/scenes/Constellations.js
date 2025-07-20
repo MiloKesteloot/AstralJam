@@ -38,6 +38,8 @@ class Constellations extends Phaser.Scene {
 
     create() {
 
+        this.add.sprite(0, 0, 'spaceBG');
+
         this.graphics = this.add.graphics();
 
         // Set up variables for consistent timing
@@ -67,11 +69,11 @@ class Constellations extends Phaser.Scene {
         this.constellations = [];
 
         this.constellations.push(
-            Play.instance.baseConstellations["house"].clone().modify(-50, -50, 2,).showStars(this)
+            Play.instance.baseConstellations["house"].clone().modify(-40, -40, 2,).showStars(this)
         )
 
         this.constellations.push(
-            Play.instance.baseConstellations["pyramid"].clone().modify(50, 50, 2,).showStars(this)
+            Play.instance.baseConstellations["pyramid"].clone().modify(30, 30, 2,).showStars(this)
         )
 
         const constellations = this;
@@ -86,6 +88,8 @@ class Constellations extends Phaser.Scene {
                 })
             }
         }
+
+        this.add.sprite(0, 0, 'viewport');
     }
 
     starClicked(constellation, index) {
