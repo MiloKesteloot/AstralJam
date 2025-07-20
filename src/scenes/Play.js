@@ -94,6 +94,8 @@ class Play extends Phaser.Scene {
 
     create() {
 
+        this.cameras.main.roundPixels = true;
+
         // Set up variables for consistent timing
         this.timeCounter = 0;
         this.updateRate = 1/120;
@@ -170,6 +172,8 @@ class Play extends Phaser.Scene {
     }
 
     update(_, dt) {
+
+        UI.instance.showNotification("pressE");
 
         // if (Phaser.Input.Keyboard.JustDown(this.keys.ESC)) {
         //     if (UI.instance.blackStage === 0 || UI.instance.skipOutro()) {

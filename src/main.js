@@ -15,6 +15,7 @@
 let config = {
     type: Phaser.AUTO,
     pixelArt: true,
+    roundPixels: true,
     // Settings to make game fullscreen
     scale: {
         mode: Phaser.Scale.RESIZE,

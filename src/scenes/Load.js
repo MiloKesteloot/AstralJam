@@ -33,6 +33,9 @@ class Load extends Phaser.Scene {
         this.load.image('spaceBG', 'assets/sprites/spaceBG.png');
         this.load.image('Arrow', 'assets/sprites/Arrow.png');
 
+        this.load.image('pressB', 'assets/sprites/pressB.png');
+        this.load.image('pressE', 'assets/sprites/pressE.png');
+
         for (let i = 1; i < 6; i++) {
             this.load.image('Journal' + i, 'assets/sprites/Journal' + i + '.png');;
         }

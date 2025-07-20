@@ -207,4 +207,25 @@ class UI extends Phaser.Scene {
 
         return text;
     }
+
+    showNotification(sprite) {
+        const scale = Play.instance.camera.scale;
+        const notification = this.add.sprite(this.cameras.main.width/2, 3*scale, sprite);
+        notification.setOrigin(0.5, 0);
+        notification.scale = scale;
+
+        // const star = this.add.sprite(0, 0, 'star');
+        // star.scale = scale;
+        // star.x = this.cameras.main.width - 93*scale;
+        // star.y = (star.height+4)*scale;
+        //
+        // const notification = this.add.sprite(this.cameras.main.width/2, this.cameras.main.height/2, sprite);
+        // notification.scale = scale;
+        // notification.setDepth(10);
+        //
+        // notification.setInteractive();
+        // notification.on('pointerdown', () => {
+        //     notification.destroy();
+        // });
+    }
 }
