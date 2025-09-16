@@ -36,24 +36,24 @@ class Camera {
         this.camera.setZoom(this.scale);
 
         // Background paralax with camera
-        if (this.scene.backgroundLayer !== undefined) {
-            console.log(this.camera.scrollX)
-            this.scene.backgroundLayer.x = (this.camera.scrollX+this.camera.width/2)/1.1 - this.camera.width/3/this.scale - 80*this.scale + this.xOffset;
-        }
-        if (this.scene.planetsLayer !== undefined) {
-            this.scene.planetsLayer.x = (this.camera.scrollX+this.camera.width/2)/1.3 - this.camera.width/3/this.scale + this.xOffset;
-        }
-        if (this.scene.cliffsLayer !== undefined) {
-            this.scene.cliffsLayer.x = (this.camera.scrollX+this.camera.width/2)/2 - this.camera.width/3/this.scale + this.xOffset;
-        }
+        // if (this.scene.backgroundLayer !== undefined) {
+        //     console.log(this.camera.scrollX)
+        //     this.scene.backgroundLayer.x = (this.camera.scrollX+this.camera.width/2)/1.1 - this.camera.width/3/this.scale - 80*this.scale + this.xOffset;
+        // }
+        // if (this.scene.planetsLayer !== undefined) {
+        //     this.scene.planetsLayer.x = (this.camera.scrollX+this.camera.width/2)/1.3 - this.camera.width/3/this.scale + this.xOffset;
+        // }
+        // if (this.scene.cliffsLayer !== undefined) {
+        //     this.scene.cliffsLayer.x = (this.camera.scrollX+this.camera.width/2)/1.3 - this.camera.width/3/this.scale + this.xOffset;
+        // }
 
         // Move water animation
         this.waterX -= this.waterMoveSpeed;
         while (this.waterX <= -16) this.waterX += 16;
         
-        if (this.scene.waterLayer !== undefined) {
-            this.scene.waterLayer.x = Math.ceil(this.waterX) + this.xOffset;
-        }
+        // if (this.scene.waterLayer !== undefined) {
+        //     this.scene.waterLayer.x = Math.ceil(this.waterX) + this.xOffset;
+        // }
     }
 
     setFollow(object) {

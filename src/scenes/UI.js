@@ -102,9 +102,8 @@ class UI extends Phaser.Scene {
                 // Show credits text
                 this.centerText = this.add.text(
                     this.sys.game.canvas.width/2, this.sys.game.canvas.height/2,
-                    'YOU WIN!\n\nKroq - An Aseprite Adventure!\n\nTime: ' +
-                    Play.instance.ticksToTime(this.finalTime) +
-                    "\n\nStars: " + this.kroq.stars + "\n\n\n\nESC to return to menu",
+                    'YOU WIN!\n\nGarden of Stars!' +
+                    '\n\nBrenna Hall\nRyan Hall\nMilo Kesteloot\nSofia Aminifard',
                     {
                         fontFamily: 'pressstart',
                         fontSize: '32px',

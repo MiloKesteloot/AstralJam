@@ -111,12 +111,14 @@ class Entity extends Phaser.GameObjects.Sprite {
             y = ay + this.ry;
         }
 
-        let gateX = this.scene.gates[this.scene.currentGate].x;
-        if (this.scene.currentGate === 2) {
-            gateX -= 16*1.5;
-        }
-        if (this.scene.currentGate < this.scene.gates.length-1 && x > gateX) {
-            return true;
+        if (this.scene.currentGate < this.scene.gates.length-1) {
+            let gateX = this.scene.gates[this.scene.currentGate].x;
+            if (this.scene.currentGate === 2) {
+                gateX -= 16 * 1.5;
+            }
+            if (x > gateX) {
+                return true;
+            }
         }
         
         const cx1 = Math.floor(Math.floor(x)/16);

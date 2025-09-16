@@ -128,7 +128,7 @@ class Play extends Phaser.Scene {
         this.groundMap = map.createLayer('ground', tileset);
         map.createLayer('bgPlants', tileset);
         map.createLayer('plants', tileset);
-        map.createLayer('foreground', tileset);
+
         // map.createLayer('mist', tileset);
 
         this.gates = [];
@@ -155,6 +155,8 @@ class Play extends Phaser.Scene {
         this.tilemap = map;
 
         this.camera.setFollow(this.kroq);
+
+        map.createLayer('foreground', tileset);
 
         this.UI = this.scene.launch('uiScene');
         this.scene.bringToTop('uiScene');
@@ -196,11 +198,13 @@ class Play extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(this.keys.E)) {
-            this.px = this.kroq.x;
-            this.py = this.kroq.y;
-            this.scene.stop('uiScene')
-            this.scene.start('constellationsScene');
-            return;
+            if (this.currentGate < this.gates.length) {
+                this.px = this.kroq.x;
+                this.py = this.kroq.y;
+                this.scene.stop('uiScene')
+                this.scene.start('constellationsScene');
+                return;
+            }
         }
 
         // Set up timing for consistent time
